@@ -25,27 +25,27 @@ zip_dir() { # zip_dir 输出文件名 目录...
 }
 
 # 1) 安卓 App 源码（完整工程，可直接用 Android Studio 打开）
-zip_dir "房东小助手-安卓App源码-v$VER.zip" android-app
+zip_dir "fangdong-helper-v$VER-android-source.zip" android-app
 
 # 2) 电脑版源码（含已编译 jar 与启动脚本）
-zip_dir "房东小助手-电脑版-v$VER.zip" pc-app
+zip_dir "fangdong-helper-v$VER-pc.zip" pc-app
 
 # 3) 后端 · Cloudflare Workers + D1
-zip_dir "房东小助手-后端-01-CloudflareWorkers-v$VER.zip" backend/cf-workers backend/shared backend/scripts
+zip_dir "fangdong-helper-v$VER-backend-01-cloudflare.zip" backend/cf-workers backend/shared backend/scripts
 
 # 4) 后端 · 腾讯 EdgeOne
-zip_dir "房东小助手-后端-02-腾讯EdgeOne-v$VER.zip" backend/tencent-edgeone
+zip_dir "fangdong-helper-v$VER-backend-02-edgeone.zip" backend/tencent-edgeone
 
 # 5) 后端 · 阿里云 ESA
-zip_dir "房东小助手-后端-03-阿里云ESA-v$VER.zip" backend/aliyun-esa-er
+zip_dir "fangdong-helper-v$VER-backend-03-esa.zip" backend/aliyun-esa-er
 
 # 6) 后端 · PHP + MySQL / SQLite
-zip_dir "房东小助手-后端-04-PHP-MySQL-v$VER.zip" backend/php
+zip_dir "fangdong-helper-v$VER-backend-04-php.zip" backend/php
 
 # 7) 全量源码（含文档与 Actions）
 tmp=$(mktemp -d)
 rsync -a "${EXCLUDES[@]}" --exclude 'release' ./* "$tmp/"
-( cd "$tmp" && zip -qr9 "$OLDPWD/$OUT/房东小助手-全量源码-v$VER.zip" . )
+( cd "$tmp" && zip -qr9 "$OLDPWD/$OUT/fangdong-helper-v$VER-source-all.zip" . )
 rm -rf "$tmp"
 
 echo "产物："

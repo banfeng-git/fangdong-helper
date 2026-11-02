@@ -18,21 +18,21 @@
 
   | 文件 | 用途 |
   | --- | --- |
-  | `房东小助手_v2.10.apk` | 安卓安装包，直接装手机 |
-  | `房东小助手-电脑版-v2.10.zip` | 电脑版成品（jar + 双击启动脚本） |
-  | `房东小助手-后端-01-CloudflareWorkers-v2.10.zip` | Cloudflare 后端 |
-  | `房东小助手-后端-02-腾讯EdgeOne-v2.10.zip` | 腾讯 EdgeOne 后端 |
-  | `房东小助手-后端-03-阿里云ESA-v2.10.zip` | 阿里云 ESA 后端 |
-  | `房东小助手-后端-04-PHP-MySQL-v2.10.zip` | PHP + MySQL/SQLite 后端 |
-  | `房东小助手-安卓App源码-v2.10.zip` | 安卓源码（想自己改 App） |
+  | `fangdong-helper-v2.10-android.apk` | 安卓安装包，直接装手机 |
+  | `fangdong-helper-v2.10-pc.zip` | 电脑版成品（jar + 双击启动脚本） |
+  | `fangdong-helper-v2.10-backend-01-cloudflare.zip` | Cloudflare 后端 |
+  | `fangdong-helper-v2.10-backend-02-edgeone.zip` | 腾讯 EdgeOne 后端 |
+  | `fangdong-helper-v2.10-backend-03-esa.zip` | 阿里云 ESA 后端 |
+  | `fangdong-helper-v2.10-backend-04-php.zip` | PHP + MySQL/SQLite 后端 |
+  | `fangdong-helper-v2.10-android-source.zip` | 安卓源码（想自己改 App） |
   | `房东小助手-电脑版源码-v2.10.zip` | 电脑版源码 |
-  | `房东小助手-全量源码-v2.10.zip` | 上面全部 + 文档 + Actions |
+  | `fangdong-helper-v2.10-source-all.zip` | 上面全部 + 文档 + Actions |
 
 - **git clone**：`git clone https://github.com/banfeng-git/fangdong-helper.git`
 
 ### 0.2 装客户端
 
-- 安卓：装 `房东小助手_v2.10.apk`（支持安卓 9–17）
+- 安卓：装 `fangdong-helper-v2.10-android.apk`（支持安卓 9–17）
 - 电脑：解压电脑版 zip，Windows 双击 `启动-Windows.bat`（需 Java 11+，推荐 17）
 
 > 客户端**不需要**登录也能用：记账、算费、出账单图片全在本地。
