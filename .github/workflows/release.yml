@@ -1,0 +1,65 @@
+name: Release
+
+# 打 tag（例如 v2.10）时自动：重建三平台产物 → 按品种打 zip → 发布到 Releases 下载页
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '版本号（不带 v，例如 2.10）'
+        required: true
+        default: '2.10'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: 重新生成三家 Serverless 平台产物
+        run: node backend/scripts/build.mjs
+
+      - name: 重新编译电脑版 jar
+        run: |
+          cd pc-app
+          chmod +x build.sh
+          ./build.sh
+
+      - name: 按品种打包 zip
+        run: |
+          chmod +x scripts/package-release.sh
+          VERSION="${{ github.event.inputs.version || '' }}"
+          if [ -z "$VERSION" ]; then VERSION="${GITHUB_REF_NAME#v}"; fi
+          ./scripts/package-release.sh "$VERSION"
+
+      - name: 发布到 Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.version && format('v{0}', github.event.inputs.version) || github.ref_name }}
+          name: 房东小助手 v${{ github.event.inputs.version || github.ref_name }}
+          body: |
+            房东小助手 v2.10：安卓 App + 独立电脑版 + 四套云端同步后端。
+
+            下载哪个：
+            - `房东小助手_v2.10.apk`：安卓安装包
+            - `房东小助手-电脑版-v2.10.zip`：电脑版（jar + 启动脚本）
+            - `房东小助手-后端-0X-*.zip`：四套后端任选其一
+            - `房东小助手-全量源码-v2.10.zip`：全部源码
+
+            部署教程见仓库 `docs/DEPLOY.md`。
+          files: release/*.zip
+          fail_on_unmatched_files: false

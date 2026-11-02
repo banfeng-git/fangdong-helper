@@ -9,6 +9,27 @@
 
 ---
 
+## 下载（不用 clone 也能用）
+
+GitHub 发布页：**<https://github.com/banfeng-git/fangdong-helper/releases/latest>**
+每个包都是 zip（APK 除外），按需下载，彼此独立：
+
+| 下载文件 | 里面是什么 | 给谁用 |
+| --- | --- | --- |
+| `房东小助手_v2.10.apk` | 安卓安装包 | 直接装手机 |
+| `房东小助手-电脑版-v2.10.zip` | jar + 双击启动脚本 + 源码 | 电脑上直接用 |
+| `房东小助手-后端-01-CloudflareWorkers-v2.10.zip` | Workers 单文件函数 + wrangler 配置 + 建表 SQL | 部署到 Cloudflare |
+| `房东小助手-后端-02-腾讯EdgeOne-v2.10.zip` | 边缘函数单文件 + 绑定说明 | 部署到腾讯 EdgeOne |
+| `房东小助手-后端-03-阿里云ESA-v2.10.zip` | 边缘函数单文件 + 绑定说明 | 部署到阿里云 ESA |
+| `房东小助手-后端-04-PHP-MySQL-v2.10.zip` | index.php + 配置 + 建表 SQL + 自测脚本 | 传到虚拟主机/服务器 |
+| `房东小助手-安卓App源码-v2.10.zip` | 完整安卓工程（含 gradlew） | 自己改 App |
+| `房东小助手-全量源码-v2.10.zip` | 全部源码 + 文档 + GitHub Actions | 想一次拿全 |
+
+完整部署教程（四套后端的每一步点击路径 + 客户端连接 + 常见问题）：
+[`docs/DEPLOY.md`](docs/DEPLOY.md)
+
+---
+
 ## 目录结构
 
 ```
