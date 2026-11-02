@@ -1,0 +1,39 @@
+name: Deploy Cloudflare Workers
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/shared/**'
+      - 'backend/scripts/**'
+      - 'backend/cf-workers/**'
+      - '.github/workflows/deploy-cloudflare.yml'
+
+jobs:
+  deploy:
+    name: 部署到 Cloudflare Workers + D1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: 生成 Workers 单文件
+        run: node backend/scripts/build.mjs
+
+      - name: 初始化 D1 表结构
+        working-directory: backend/cf-workers
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@3 d1 execute fangdong_db --remote --file=schema.sql
+
+      - name: 部署 Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: backend/cf-workers
+          command: deploy

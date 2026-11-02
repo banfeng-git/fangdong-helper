@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="24dp"
+    android:paddingTop="8dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="4dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/room_name_hint"
+        app:boxBackgroundMode="outline">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/room_dg_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/room_tenant_hint"
+        app:boxBackgroundMode="outline">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/room_dg_tenant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/rent_start_hint"
+        app:boxBackgroundMode="outline">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/room_dg_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="date"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/rent_end_hint"
+        app:boxBackgroundMode="outline">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/room_dg_end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:inputType="date"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

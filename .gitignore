@@ -1,0 +1,24 @@
+# Android
+android-app/build/
+android-app/**/build/
+android-app/.gradle/
+android-app/**/.gradle/
+android-app/local.properties
+*.iml
+.idea/
+
+# PC
+pc-app/out/
+pc-app/dist/*.jar
+pc-app/*.exe
+
+# 后端
+node_modules/
+
+# 本地数据
+.fangdong-helper/
+
+# 签名文件绝不入库
+android-app/keystore.properties
+android-app/**/*.keystore
+android-app/**/*.jks

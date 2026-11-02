@@ -1,0 +1,9 @@
+# 让 /api/xxx 全部交给 index.php 处理
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+# Apache + CGI 环境下保留 Authorization 头（否则拿不到 token）
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

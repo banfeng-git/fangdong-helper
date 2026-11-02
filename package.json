@@ -1,0 +1,11 @@
+{
+  "name": "fangdong-helper-open",
+  "version": "2.10.0",
+  "private": true,
+  "type": "module",
+  "description": "房东小助手 · 云端同步后端（Cloudflare Workers / 腾讯 EdgeOne / 阿里云 ESA 三平台一套代码）",
+  "scripts": {
+    "build": "node backend/scripts/build.mjs",
+    "test": "node backend/tests/core.test.mjs"
+  }
+}

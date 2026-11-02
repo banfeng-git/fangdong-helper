@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">房东小助手</string>
+    <string name="menu_fee_settings">收费项目设置</string>
+    <string name="menu_export">导出账单数据（CSV）</string>
+    <string name="export_title">选择导出范围</string>
+    <string name="export_all">导出全部账单</string>
+    <string name="export_month">导出当前月份</string>
+    <string name="export_year_month">按年份月份导出…</string>
+    <string name="export_empty">当前没有可导出的账单</string>
+    <string name="export_ok">CSV 已保存到 Download/房东小助手 目录</string>
+    <string name="export_fail">导出失败，请检查存储权限</string>
+    <string name="export_range_label">导出范围：</string>
+    <string name="export_range_filter">当前筛选结果</string>
+    <string name="month_filter_label">月份：</string>
+    <string name="year_filter_label">年份：</string>
+    <string name="search_hint">搜索房间/租客/备注…</string>
+    <string name="month_all">全部</string>
+    <string name="year_all">全部</string>
+    <string name="sum_water_label">水费</string>
+    <string name="sum_elec_label">电费</string>
+    <string name="sum_gas_label">燃气</string>
+    <string name="sum_other_label">其他</string>
+    <string name="sum_total_label">合计</string>
+    <string name="fab_new_bill">新建账单</string>
+    <string name="placeholder_text">选择左侧账单查看详情\n或点击右下角 ＋ 新建账单</string>
+    <string name="overview_latest">最新账单</string>
+    <string name="overview_all">全部账单汇总</string>
+    <string name="btn_view_history">查看历史账单</string>
+    <string name="btn_back_overview">← 返回总览</string>
+    <string name="history_title">历史账单</string>
+    <string name="section_water">水表（可点 ＋ 添加多块水表，每块填起止码自动算费）</string>
+    <string name="btn_add_water">＋ 添加水表</string>
+    <string name="remove_water">删除水表</string>
+    <string name="section_gas">燃气表（可点 ＋ 添加多块燃气表，每块填起止码自动算费）</string>
+    <string name="btn_add_gas">＋ 添加燃气表</string>
+    <string name="remove_gas">删除燃气表</string>
+    <string name="section_elec">电表（可点 ＋ 添加多块电表，每块填起止码自动算费）</string>
+    <string name="btn_add_meter">＋ 添加电表</string>
+    <string name="section_extra">其他费用明细</string>
+    <string name="btn_add_extra">＋ 添加收费项目</string>
+    <string name="btn_calc">按标准自动计算</string>
+    <string name="btn_save">保存账单</string>
+    <string name="btn_share">分享到微信</string>
+    <string name="btn_save_img">存为表格图片</string>
+    <string name="btn_copy">复制文本</string>
+    <string name="btn_delete">删除此账单</string>
+    <string name="btn_next_month">记下月（止码变下月起码）</string>
+    <string name="total_label">合计：</string>
+    <string name="hint_month">月份，如 2025-12</string>
+    <string name="hint_room">房间号（可留空）</string>
+    <string name="hint_tenant">租客姓名或ID</string>
+    <string name="hint_water_start">水表起码</string>
+    <string name="hint_water_end">水表止码</string>
+    <string name="hint_water_usage">水用量（自动）</string>
+    <string name="hint_water_fee">水费</string>
+    <string name="hint_gas_start">燃气起码</string>
+    <string name="hint_gas_end">燃气止码</string>
+    <string name="hint_gas_usage">燃气用量（自动）</string>
+    <string name="hint_gas_fee">燃气费</string>
+    <string name="hint_elec1_start">电表1起码</string>
+    <string name="hint_elec1_end">电表1止码</string>
+    <string name="hint_elec1_usage">电表1用量（自动）</string>
+    <string name="hint_elec2_start">电表2起码</string>
+    <string name="hint_elec2_end">电表2止码</string>
+    <string name="hint_elec2_usage">电表2用量（自动）</string>
+    <string name="hint_elec_fee">电费（自动）</string>
+    <string name="hint_note">备注（可不填）</string>
+    <string name="hint_extra_usage">用量</string>
+    <string name="hint_extra_amount">金额</string>
+    <string name="unit_ton">吨</string>
+    <string name="unit_kwh">度</string>
+    <string name="unit_yuan">元</string>
+    <string name="badge_builtin">内置</string>
+    <string name="fee_type_usage">按用量（用量×单价）</string>
+    <string name="fee_type_fixed">固定金额（每月）</string>
+    <string name="dialog_add_extra_title">添加到账单</string>
+    <string name="dialog_custom_extra">＋ 自定义项目…</string>
+    <string name="dialog_custom_title">自定义收费项目</string>
+    <string name="dialog_fee_title_new">新增收费项目</string>
+    <string name="dialog_fee_title_edit">编辑收费项目</string>
+    <string name="hint_fee_name">项目名称</string>
+    <string name="hint_fee_price">单价（元）</string>
+    <string name="hint_fee_unit">单位，如 吨/度/方</string>
+    <string name="fee_type_label">收费方式：</string>
+    <string name="settings_intro">水费、燃气费、电表按“用量×单价”自动算费（水表、燃气表、电表都支持多块，各表合计费用）；其他项目可设为每月固定金额，或按用量计入每张账单。</string>
+    <string name="fee_settings_title">收费项目与收费标准</string>
+    <string name="confirm_delete_bill">确定删除这条账单吗？</string>
+    <string name="confirm_delete_fee">确定删除收费项目“%1$s”吗？</string>
+    <string name="toast_saved">已保存</string>
+    <string name="toast_deleted">已删除</string>
+    <string name="toast_copied">账单文本已复制，可直接粘贴到微信</string>
+    <string name="toast_saved_image">账单图片已保存到相册</string>
+    <string name="toast_need_month">请填写月份，格式如 2025-12</string>
+    <string name="toast_need_room">请填写房间号</string>
+    <string name="permission_storage">保存图片到相册需要存储权限</string>
+    <string name="dialog_cancel">取消</string>
+    <string name="dialog_ok">确定</string>
+    <string name="dialog_delete">删除</string>
+    <string name="dialog_confirm">确定</string>
+
+    <!-- v1.6 房间二级导航 -->
+    <string name="room_list_title">房间</string>
+    <string name="add_room">添加房间</string>
+    <string name="edit_room">编辑房间</string>
+    <string name="room_name_hint">房间名称（必填，如 房间1）</string>
+    <string name="room_tenant_hint">租客（可不填）</string>
+    <string name="rent_start_hint">租房时间（年月日，如 2025-01-01）</string>
+    <string name="rent_end_hint">到期时间（年月日，如 2025-12-31）</string>
+    <string name="rent_period">租期</string>
+    <string name="delete_room">删除房间</string>
+    <string name="confirm_delete_room">删除房间「%1$s」会同时删除该房间的全部账单，且不可恢复。确定删除吗？</string>
+    <string name="room_bill_count">%1$d 条账单</string>
+    <string name="no_rooms">还没有房间\n点底部 ＋ 添加房间，或在新建账单时填写房间名</string>
+    <string name="room_no_bills">该房间暂无账单，点「新的账单」开始记账</string>
+    <string name="room_new_bill">新的账单</string>
+    <string name="room_history">历史账单</string>
+    <string name="room_history_hide">收起历史账单</string>
+    <string name="room_export_current">导出当前账单</string>
+    <string name="room_export_all">导出全部账单</string>
+    <string name="room_current_bill">当前账单</string>
+    <string name="room_no_current">暂无当前账单</string>
+    <string name="room_saved">房间信息已保存</string>
+    <string name="room_deleted">房间已删除</string>
+    <string name="room_name_required">请填写房间名称</string>
+    <string name="export_current_ok">当前账单 CSV 已保存到 Download/房东小助手 目录</string>
+    <string name="export_room_ok">该房间全部账单 CSV 已保存到 Download/房东小助手 目录</string>
+    <string name="export_single_ok">账单 CSV 已保存到 Download/房东小助手 目录</string>
+    <string name="bill_export">导出此账单</string>
+
+    <!-- v2.0 底部导航 -->
+    <string name="bottom_home">主页</string>
+    <string name="bottom_add">添加</string>
+    <string name="bottom_settings">设置</string>
+
+    <!-- v2.1 导入导出 -->
+    <string name="btn_import">导入</string>
+    <string name="btn_export_all_rooms">导出全部</string>
+    <string name="import_title">导入账单数据（CSV）</string>
+    <string name="import_empty">未选择文件或文件为空</string>
+    <string name="import_parse_fail">文件解析失败，请确认是导出的 CSV 文件</string>
+    <string name="import_ok">成功导入 %1$d 条账单</string>
+    <string name="export_all_rooms_ok">全部账单 CSV 已保存到 Download/房东小助手 目录</string>
+    <string name="room_menu_import">导入账单（CSV）</string>
+    <string name="room_menu_export">导出全部账单</string>
+    <string name="room_menu_edit">编辑房间</string>
+    <string name="room_menu_delete">删除房间</string>
+    <string name="bottom_add_menu_title">选择操作</string>
+    <string name="bottom_add_room">添加房间</string>
+    <string name="bottom_add_import">快捷导入账单（CSV）</string>
+    <string name="bottom_add_export">导出全部账单</string>
+
+    <!-- v2.3 设置菜单 / 关于 -->
+    <string name="settings_title">设置</string>
+    <string name="settings_fee">收费项目与标准</string>
+    <string name="settings_about">软件功能介绍</string>
+    <string name="about_author_line">作者：知遇</string>
+    <string name="about_version_line">版本 v%1$s（支持安卓 9 – 17）</string>
+    <string name="about_changelog">更新日志：
+· v2.10
+　- 新增「云端同步（可选）」：设置 → 云端同步，填服务端地址后注册/登录，可上传本地账单、下载云端账单，手机和电脑共用同一份账目
+　- 不登录、不填服务器地址也完全不影响记账、算费、生成表格图片，服务端地址全部由用户自己填写
+　- 兼容 Cloudflare Workers、腾讯 EdgeOne、阿里云 ESA 三套自建后端，填任意一家域名即可
+　- 账单新增唯一编号与修改时间，多设备同步时按修改时间合并，不会互相覆盖
+· v2.9
+　- 账单图片的合计行与表名按实际项目自动组合：水+电+燃气显示“水电燃气合计”，没有燃气显示“水电合计”，只有电显示“电合计”
+　- 没有添加其他收费项目时不显示合计行，避免与总费用重复
+　- 表格里只有一个收费项目时也不显示合计行（合计就等于该项金额）
+　- 分享文字与账单图片的合计文字、显示规则完全一致
+　- 修复用系统返回键退出账单编辑页时底部导航栏消失的问题
+　- 修复安卓 15/16 全面屏机型底栏被系统导航栏遮挡的问题
+
+功能介绍：
+· 房间管理：多房间记账，可设租客、租房/到期时间
+· 水电燃气：水表、燃气表、电表都支持多块，填起止码自动算用量与费用
+· 记下月：自动把上月止码填为下月起码，止码留空手填
+· 收费项目：水费、电表、燃气费单价可自定义，按用量或固定金额计费
+· 搜索：按房间、租客、备注快速查找账单
+· 导入导出：CSV 批量备份与恢复
+· 分享：账单存为表格图片或复制文本发微信
+· 支持安卓 9 – 17</string>
+
+
+    <string name="sync_title">云端同步（可选）</string>
+    <string name="sync_server_label">服务端地址</string>
+    <string name="sync_server_hint">https://你的域名</string>
+    <string name="sync_server_tip">填 Cloudflare、腾讯 EdgeOne 或阿里云 ESA 任意一家的域名即可；只填域名会自动补 /api。</string>
+    <string name="sync_username_hint">账号</string>
+    <string name="sync_password_hint">密码</string>
+    <string name="sync_login">登录</string>
+    <string name="sync_register">注册</string>
+    <string name="sync_logout">退出登录</string>
+    <string name="sync_upload">上传本地账单</string>
+    <string name="sync_download">从云端下载</string>
+    <string name="sync_status_idle">本软件不强制登录，不填服务端地址也能完整记账、算费、出表格图片。
+
+想多台设备同步时：先在服务器上部署其中一套后端，再在这里填地址、注册登录，然后上传/下载。</string>
+    <string name="settings_sync">云端同步（可选）</string>
+</resources>

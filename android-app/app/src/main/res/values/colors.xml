@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主色：墨绿（去蓝化，更清爽自然） -->
+    <color name="primary">#2F6B4F</color>
+    <color name="primary_dark">#245441</color>
+    <color name="primary_light">#4E8C6D</color>
+    <color name="secondary">#26A69A</color>
+    <color name="secondary_dark">#00897B</color>
+    <color name="accent">#E67E22</color>
+    <color name="red">#D32F2F</color>
+    <color name="green">#2E7D32</color>
+    <color name="white">#FFFFFF</color>
+    <color name="bg">#F5F6F8</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="ic_launcher_background">#2F6B4F</color>
+    <!-- 底部导航图标/文字色（用户要求回上一版蓝色，账单页配色不变） -->
+    <color name="bottom_blue">#2F5AAA</color>
+</resources>

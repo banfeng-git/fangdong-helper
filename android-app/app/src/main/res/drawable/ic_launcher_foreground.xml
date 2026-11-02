@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 房身（白色圆角） -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M32,58 a4,4 0 0 1 4,-4 h36 a4,4 0 0 1 4,4 v24 a4,4 0 0 1 -4,4 h-36 a4,4 0 0 1 -4,-4 Z" />
+    <!-- 屋顶（橙色） -->
+    <path
+        android:fillColor="#FFE67E22"
+        android:pathData="M22,58 L54,24 L86,58 Z" />
+    <!-- 门（深绿圆拱） -->
+    <path
+        android:fillColor="#FF2F6B4F"
+        android:pathData="M47,82 h14 v-10 a7,7 0 0 0 -14,0 Z" />
+    <!-- 圆窗（深绿） -->
+    <path
+        android:fillColor="#FF2F6B4F"
+        android:pathData="M58,62 a5,5 0 1 1 0,10 a5,5 0 1 1 0,-10 Z" />
+    <!-- 闪电（亮黄，从屋顶右侧冒出，代表水电能源） -->
+    <path
+        android:fillColor="#FFFFC53D"
+        android:pathData="M73,28 L58,49 L67,49 L53,68 L61,50 L52,50 Z" />
+</vector>

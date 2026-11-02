@@ -1,0 +1,15 @@
+# Cloudflare Workers 部署配置
+# 部署：npx wrangler deploy   （或推送 GitHub 由 Actions 自动部署）
+name = "fangdong-sync"
+main = "dist/index.js"
+compatibility_date = "2025-06-01"
+
+# 允许跨域来源：网页端调试可先填 "*"，正式上线建议改成你的站点域名
+[vars]
+CORS_ORIGIN = "*"
+
+# D1 数据库绑定（变量名必须是 DB，代码里用 env.DB）
+[[d1_databases]]
+binding = "DB"
+database_name = "fangdong_db"
+database_id = "在这里替换成你的 D1 database_id"

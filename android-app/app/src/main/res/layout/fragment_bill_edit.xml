@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_edit"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/white"
+        app:navigationIcon="@drawable/ic_back"
+        app:navigationIconTint="@color/text_primary"
+        app:titleTextColor="@color/text_primary" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_month"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/in_month"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_room"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/in_room"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space
+                    android:layout_width="8dp"
+                    android:layout_height="1dp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_tenant"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/in_tenant"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_water"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/btn_add_water"
+                android:textColor="@color/secondary"
+                app:strokeColor="@color/secondary"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <LinearLayout
+                android:id="@+id/water_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="2dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/section_water"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
+
+                <LinearLayout
+                    android:id="@+id/water_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_gas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/btn_add_gas"
+                android:textColor="@color/secondary"
+                app:strokeColor="@color/secondary"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <LinearLayout
+                android:id="@+id/gas_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="2dp"
+                    android:paddingBottom="4dp"
+                    android:text="@string/section_gas"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp" />
+
+                <LinearLayout
+                    android:id="@+id/gas_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/meter_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_meter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/btn_add_meter"
+                android:textColor="@color/secondary"
+                app:strokeColor="@color/secondary"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="@string/section_extra"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
+            <LinearLayout
+                android:id="@+id/extra_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="vertical" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_extra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/btn_add_extra"
+                android:textColor="@color/secondary"
+                app:strokeColor="@color/secondary"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:hint="@string/hint_note"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/in_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:minLines="2" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="end|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_label"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/txt_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:text="0.00"
+                    android:textColor="@color/accent"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_calc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/btn_calc"
+                android:textColor="@color/primary"
+                app:strokeColor="@color/primary"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/btn_save"
+                style="@style/Widget.MaterialComponents.Button" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_share"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btn_share"
+                    android:textColor="@color/primary"
+                    app:strokeColor="@color/primary"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                <Space
+                    android:layout_width="6dp"
+                    android:layout_height="1dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_save_img"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/btn_save_img"
+                    android:textColor="@color/primary"
+                    app:strokeColor="@color/primary"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_copy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/btn_copy"
+                android:textColor="@color/primary"
+                app:strokeColor="@color/primary"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_next_month"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/btn_next_month"
+                android:textColor="@color/secondary"
+                app:strokeColor="@color/secondary"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/btn_delete"
+                android:textColor="@color/red"
+                app:strokeColor="@color/red"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

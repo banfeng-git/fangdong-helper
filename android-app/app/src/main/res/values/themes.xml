@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.RentUtility" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorSecondaryVariant">@color/secondary_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:colorBackground">@color/bg</item>
+        <!-- 状态栏：浅色背景+深色图标，适配安卓15+ 强制 edge-to-edge（白字白底不可见问题） -->
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <!-- 系统导航栏：浅色背景 + 深色手势条/按键，避免 edge-to-edge 下透明导航栏“看不见”、
+             内容压到导航栏底下（v2.9 修复导航栏消失/被遮挡） -->
+        <item name="android:navigationBarColor">@color/bg</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <!-- 安卓15+ 默认强制 edge-to-edge 会把内容顶到状态栏后面、盖住状态信息；
+             此开关退出该强制行为，恢复传统状态栏（时间/电量正常显示） -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+    </style>
+</resources>

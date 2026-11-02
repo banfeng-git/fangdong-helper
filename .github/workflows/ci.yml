@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  backend:
+    name: 后端构建与自测
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 构建三家平台单文件
+        run: node backend/scripts/build.mjs
+      - name: 核心逻辑自测（KV / D1）
+        run: node backend/tests/core.test.mjs
+      - name: 三平台部署产物端到端自测
+        run: node backend/tests/dist.test.mjs
+
+  php-backend:
+    name: PHP 后端自测
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_sqlite
+      - name: 语法检查
+        run: php -l backend/php/index.php
+      - name: 全流程自测
+        run: |
+          cd backend/php
+          chmod +x test.sh
+          ./test.sh
+
+  pc-app:
+    name: 电脑版编译
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: 编译并打包 jar
+        run: |
+          cd pc-app
+          chmod +x build.sh
+          ./build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fangdong-pc
+          path: pc-app/dist/*.jar
+
+  android:
+    name: 安卓 App 编译
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: 编译 Debug APK
+        run: |
+          cd android-app
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fangdong-android-debug
+          path: android-app/app/build/outputs/apk/debug/*.apk
