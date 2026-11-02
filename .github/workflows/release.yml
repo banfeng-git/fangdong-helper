@@ -63,3 +63,5 @@ jobs:
             部署教程见仓库 `docs/DEPLOY.md`。
           files: release/*.zip
           fail_on_unmatched_files: false
+          allow_updates: true        # 同名 tag 已存在发布时，允许更新而不是报错
+          make_latest: true
