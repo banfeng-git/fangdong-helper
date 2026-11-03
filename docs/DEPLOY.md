@@ -212,8 +212,36 @@ curl https://<项目名>.edgeone.dev/api/health
 
 - 从**中国大陆网络**访问项目域名会返回 `401 UNAUTHORIZED`（平台合规限制，不是代码问题）
 - 控制台点项目卡片上的 **Preview** 会生成带 `?eo_token=...&eo_time=...` 的临时链接，**有效期 3 小时**，大陆网络可访问
-- 想长期稳定：**Domains → Add custom domain** 绑自己的域名（全球区不含大陆的加速区域**不需要备案**），再在 DNS 加 CNAME
+- 想长期稳定：**Domains → Add custom domain** 绑自己的域名（全球区不含大陆的加速区域**不需要备案**），见下面的实测步骤
 - 客户端填地址时：临时调试可以带 token 的完整链接；长期用自己绑的域名
+
+### B5. 绑自定义域名（实测通过，以 `fd.466949.xyz` 为例）
+
+1. 项目 → **Domains → Add custom domain**，填子域名（如 `fd.example.com`），环境选 `Production`
+2. 平台要求先做**归属验证**，给一条 TXT：
+
+   | 主机记录 | 类型 | 值 |
+   | --- | --- | --- |
+   | `edgeonereclaim.fd` | TXT | `reclaim-xxxxxxxx`（控制台生成的一串） |
+
+   注意主机记录是「平台前缀 + 你的子域前缀」，例如域名是 `fd.example.com` 就填 `edgeonereclaim.fd`
+3. 加完等 5–10 分钟，回控制台点 **Verify**，显示 `Verify successfully` 后点 **Complete**
+4. 状态会先变成 `Deploying`，同时 CNAME 列的**目标地址**才出现（例如 `fd.example.com.pages.dnsoe7.com`）。
+   这个回源记录是平台异步生成的，**刚加域名时查它是 NXDOMAIN，属于正常**
+5. 回 DNS 后台加 CNAME：主机记录填子域前缀（`fd`），值填第 4 步的目标
+   - Cloudflare 用户：先关代理（灰色云朵 / DNS only），否则会套一层 CDN，和 EdgeOne 打架
+6. 等状态从 `Deploying` 变成 `Effective`（实测约 2 分钟）
+7. HTTPS 列会显示 `Not configured` → 点 **Configuration** → **Apply for a free certificate**（推荐）→ Save，
+   平台自动签发 DV 证书（实测 TrustAsia，几分钟签好），之后 `https://你的域名/api/health` 直接通
+
+验收命令：
+
+```bash
+curl https://fd.example.com/api/health
+# {"code":0,"msg":"ok","data":{"platform":"edgeone","version":"2.10"}}
+```
+
+绑好域名后，**大陆网络也能直连**，不再需要 3 小时一换的预览链接。
 
 ## 三、阿里云 ESA（边缘函数 + EdgeKV）
 
