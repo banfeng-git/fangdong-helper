@@ -115,4 +115,48 @@ for (const [dir, spec] of Object.entries(platforms)) {
   console.log('生成 ' + path.relative(process.cwd(), outFile) + '  (' + out.length + ' 字节)');
 }
 
+
+/* ---------- EdgeOne 国际版 Makers 入口（edge-functions 目录） ----------
+ * 有 KV 绑定就走 KV；没有就自动落到 Blob 存储（getStore 即用，不需要提前开通）。
+ * Blob 是最终一致存储，这里统一用 consistency: 'strong' 读，避免刚写完读不到。
+ */
+const pagesGlue = `
+/* ---------- EdgeOne 国际版 Makers 入口：KV 优先，Blob 兜底 ---------- */
+import { getStore } from '@edgeone/pages-blob';
+
+const KV_BIND = (typeof my_kv !== 'undefined' && my_kv) ? my_kv : null;
+const BLOB_NAMESPACE = 'fangdong';
+
+export async function onRequest({ request, env }) {
+  const binding = KV_BIND || (env && (env.KV || env.my_kv));
+  let store;
+  if (binding) {
+    store = createKvStore({
+      async getText(key) {
+        const v = await binding.get(key);
+        return (v === null || v === undefined) ? null : String(v);
+      },
+      async putText(key, value) { await binding.put(key, String(value)); },
+      async deleteKey(key) { await binding.delete(key); }
+    });
+  } else {
+    const blob = getStore(BLOB_NAMESPACE);
+    store = createKvStore({
+      async getText(key) {
+        const v = await blob.get(key, { consistency: 'strong' });
+        return (v === null || v === undefined) ? null : String(v);
+      },
+      async putText(key, value) { await blob.set(key, String(value)); },
+      async deleteKey(key) { await blob.delete(key); }
+    });
+  }
+  return createHandler({ store: store, platform: 'edgeone' })(request);
+}
+`;
+
+const pagesOut = path.join(backendDir, 'tencent-edgeone-pages', 'edge-functions', 'api', '[[default]].js');
+fs.mkdirSync(path.dirname(pagesOut), { recursive: true });
+fs.writeFileSync(pagesOut, banner('腾讯 EdgeOne Makers 边缘函数（国际版 edge-functions 目录）') + core + pagesGlue, 'utf8');
+console.log('生成 ' + path.relative(process.cwd(), pagesOut));
+
 console.log('\n三平台构建完成。');

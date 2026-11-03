@@ -192,6 +192,20 @@ curl https://<项目名>.edgeone.dev/api/health
 # 绑定后返回：{"code":0,"msg":"ok","data":{"platform":"edgeone",...}}
 ```
 
+### B3'. KV 还没审核通过？用 Blob 兜底（已实测）
+
+国际版 Makers 的 **Blob** 存储不需要开通、不需要绑定：函数里 `getStore('fangdong')` 一调用，平台自动建命名空间。
+
+`backend/tencent-edgeone-pages/` 里的函数入口已经做成 **KV 优先、Blob 兜底**：
+
+- `env.KV` / `env.my_kv` 有绑定时走 KV（最快）
+- 没绑定时自动 `getStore('fangdong')` 读写 Blob，**不用等审核就能用**
+- Blob 是最终一致存储，代码里读操作统一加了 `{ consistency: 'strong' }`，写完立刻读得到
+
+`package.json` 里已声明 `"@edgeone/pages-blob": "^0.0.18"`，Makers 构建时会自动 `npm install`（构建日志的 Install 阶段能看到），无需本地打包依赖。
+
+> 注意：Blob 免费版单账户 1GB，存账单文本绰绰有余；KV 审核通过后建议还是绑上 KV 走主路径。
+
 ### B4. 关于 401 和访问地址（重要）
 
 国际版如果加速区域是 **Global (MLC excluded)**：

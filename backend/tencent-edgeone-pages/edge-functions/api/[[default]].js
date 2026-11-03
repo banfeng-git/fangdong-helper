@@ -1,5 +1,5 @@
 /**
- * 房东小助手 · 云同步后端（腾讯 EdgeOne Makers 边缘函数 + EdgeOne KV）
+ * 房东小助手 · 云同步后端（腾讯 EdgeOne Makers 边缘函数（国际版 edge-functions 目录））
  * 本文件由 backend/scripts/build.mjs 自动生成，请勿手改；
  * 修改逻辑请改 backend/shared/core.js 后重新执行 npm run build。
  */
@@ -596,27 +596,34 @@ function createHandler(options) {
 }
 
 
-/* ---------- 腾讯 EdgeOne 入口：KV 键值存储 ----------
- * 控制台把 KV 命名空间绑定到函数时填写的变量名默认为 my_kv，
- * 若你用了别的变量名，既可以直接改下面的 KV_BIND，也可以在环境变量里配 KV。
- */
+/* ---------- EdgeOne 国际版 Makers 入口：KV 优先，Blob 兜底 ---------- */
+import { getStore } from '@edgeone/pages-blob';
+
 const KV_BIND = (typeof my_kv !== 'undefined' && my_kv) ? my_kv : null;
+const BLOB_NAMESPACE = 'fangdong';
 
 export async function onRequest({ request, env }) {
   const binding = KV_BIND || (env && (env.KV || env.my_kv));
-  if (!binding) {
-    return new Response(JSON.stringify({ code: 500, msg: '未绑定 EdgeOne KV 命名空间' }), {
-      status: 500, headers: { 'Content-Type': 'application/json; charset=utf-8' }
+  let store;
+  if (binding) {
+    store = createKvStore({
+      async getText(key) {
+        const v = await binding.get(key);
+        return (v === null || v === undefined) ? null : String(v);
+      },
+      async putText(key, value) { await binding.put(key, String(value)); },
+      async deleteKey(key) { await binding.delete(key); }
+    });
+  } else {
+    const blob = getStore(BLOB_NAMESPACE);
+    store = createKvStore({
+      async getText(key) {
+        const v = await blob.get(key, { consistency: 'strong' });
+        return (v === null || v === undefined) ? null : String(v);
+      },
+      async putText(key, value) { await blob.set(key, String(value)); },
+      async deleteKey(key) { await blob.delete(key); }
     });
   }
-  const kv = {
-    async getText(key) {
-      const v = await binding.get(key);
-      return (v === null || v === undefined) ? null : String(v);
-    },
-    async putText(key, value) { await binding.put(key, String(value)); },
-    async deleteKey(key) { await binding.delete(key); }
-  };
-  const store = createKvStore(kv);
   return createHandler({ store: store, platform: 'edgeone' })(request);
 }
