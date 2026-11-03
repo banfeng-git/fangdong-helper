@@ -34,7 +34,7 @@ zip_dir "fangdong-helper-v$VER-pc.zip" pc-app
 zip_dir "fangdong-helper-v$VER-backend-01-cloudflare.zip" backend/cf-workers backend/shared backend/scripts
 
 # 4) 后端 · 腾讯 EdgeOne
-zip_dir "fangdong-helper-v$VER-backend-02-edgeone.zip" backend/tencent-edgeone
+zip_dir "fangdong-helper-v$VER-backend-02-edgeone.zip" backend/tencent-edgeone backend/tencent-edgeone-pages
 
 # 5) 后端 · 阿里云 ESA
 zip_dir "fangdong-helper-v$VER-backend-03-esa.zip" backend/aliyun-esa-er

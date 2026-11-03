@@ -1,0 +1,6 @@
+{
+  "name": "fangdong-sync-edgeone",
+  "version": "2.10.0",
+  "private": true,
+  "description": "房东小助手云同步后端（EdgeOne Makers Edge Functions + KV）"
+}

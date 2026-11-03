@@ -19,7 +19,7 @@ GitHub 发布页：**<https://github.com/banfeng-git/fangdong-helper/releases/la
 | `fangdong-helper-v2.10-android.apk` | 安卓安装包 | 直接装手机 |
 | `fangdong-helper-v2.10-pc.zip` | jar + 双击启动脚本 + 源码 | 电脑上直接用 |
 | `fangdong-helper-v2.10-backend-01-cloudflare.zip` | Workers 单文件函数 + wrangler 配置 + 建表 SQL | 部署到 Cloudflare |
-| `fangdong-helper-v2.10-backend-02-edgeone.zip` | 边缘函数单文件 + 绑定说明 | 部署到腾讯 EdgeOne |
+| `fangdong-helper-v2.10-backend-02-edgeone.zip` | 边缘函数单文件 + 绑定说明 | 部署到腾讯 EdgeOne（含国际版 Makers 目录） |
 | `fangdong-helper-v2.10-backend-03-esa.zip` | 边缘函数单文件 + 绑定说明 | 部署到阿里云 ESA |
 | `fangdong-helper-v2.10-backend-04-php.zip` | index.php + 配置 + 建表 SQL + 自测脚本 | 传到虚拟主机/服务器 |
 | `fangdong-helper-v2.10-android-source.zip` | 完整安卓工程（含 gradlew） | 自己改 App |

@@ -153,6 +153,54 @@ node backend/scripts/build.mjs     # 重新生成三家平台的 dist
 
 ---
 
+## 二·补充、EdgeOne **国际版（Makers）** 部署（已实测跑通）
+
+> 国际站和国内站不是一个控制台。国际版走 **EdgeOne Makers**（pages.edgeone.ai / console.tencentcloud.com/edgeone/makers），
+> 目录结构是 `edge-functions/`，不是「粘贴单文件」那套。仓库里已经放好了适配目录：
+> `backend/tencent-edgeone-pages/`（`edge-functions/api/[[default]].js` 兜住所有 `/api/*`）。
+
+### B1. 准备上传包
+
+```bash
+cd backend/tencent-edgeone-pages
+zip -r /tmp/fangdong-edgeone-pages.zip edge-functions index.html package.json
+```
+
+也可以直接用发布页里 `fangdong-helper-v2.10-backend-02-edgeone.zip` 内的 `tencent-edgeone-pages/` 目录。
+
+### B2. 上传建项目
+
+1. 打开 <https://console.tencentcloud.com/edgeone/makers> → **Create project** → **Upload directly**
+2. Project name 填 `fangdong-sync`，加速区域保持 `Global (MLC excluded)`
+3. 选那个 zip → **Start deployment**，约 20 秒出 `Success`
+4. 域名默认是 `https://<项目名>.edgeone.dev`
+
+### B3. 开 KV 并绑定（必须）
+
+控制台左上 **Makers → Storage → KV Storage**：
+
+1. 首次使用要先 **Apply now** 申请开通 KV（填一句用途，等审核通过；控制台显示 `Pending Approval`）
+2. 通过后回到项目 → **Storage → KV Storage → Bind namespace**
+3. **Variable name 填 `KV`**（代码里 `env.KV || env.my_kv` 两个名字都认），Namespace 选刚建的那个
+4. 重新部署一次（或等下一次部署）让绑定生效
+
+验证：
+
+```bash
+curl https://<项目名>.edgeone.dev/api/health
+# 未绑 KV 时会返回：{"code":500,"msg":"未绑定 EdgeOne KV 命名空间"}
+# 绑定后返回：{"code":0,"msg":"ok","data":{"platform":"edgeone",...}}
+```
+
+### B4. 关于 401 和访问地址（重要）
+
+国际版如果加速区域是 **Global (MLC excluded)**：
+
+- 从**中国大陆网络**访问项目域名会返回 `401 UNAUTHORIZED`（平台合规限制，不是代码问题）
+- 控制台点项目卡片上的 **Preview** 会生成带 `?eo_token=...&eo_time=...` 的临时链接，**有效期 3 小时**，大陆网络可访问
+- 想长期稳定：**Domains → Add custom domain** 绑自己的域名（全球区不含大陆的加速区域**不需要备案**），再在 DNS 加 CNAME
+- 客户端填地址时：临时调试可以带 token 的完整链接；长期用自己绑的域名
+
 ## 三、阿里云 ESA（边缘函数 + EdgeKV）
 
 ### 3.1 开通
