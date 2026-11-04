@@ -353,6 +353,7 @@ public final class Model {
         }
         m.put("extras", ex);
         m.put("updatedAt", b.updatedAt);
+        m.put("device", "PC (Windows)");
         return m;
     }
 

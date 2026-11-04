@@ -198,11 +198,111 @@ public class SyncDialog extends JDialog {
                 append("下载失败：" + r.msg);
                 return;
             }
-            int n = MainFrame.mergeCloudBills(r.data);
-            append("云端共 " + (int) Json.num(r.data, "count", 0) + " 条，已合并 " + n + " 条到本地。");
-            if (onChanged != null) onChanged.run();
-            persist();
+            List<Map<String, Object>> bills = new ArrayList<>();
+            for (Object o : Json.arr(r.data, "bills")) {
+                if (o instanceof Map) bills.add(Json.obj(o));
+            }
+            SwingUtilities.invokeLater(() -> showCloudPicker(bills));
         });
+    }
+
+    /** 手动勾选：列出云端账单（含来源机型），可下载选中或删除选中 */
+    private void showCloudPicker(List<Map<String, Object>> bills) {
+        if (bills == null || bills.isEmpty()) {
+            append("云端还没有账单。");
+            return;
+        }
+        JDialog dlg = new JDialog(this, "选择云端账单（共 " + bills.size() + " 条）", true);
+        dlg.setLayout(new BorderLayout(8, 8));
+
+        JPanel list = new JPanel(new GridLayout(0, 1, 4, 4));
+        List<JCheckBox> boxes = new ArrayList<>();
+        for (Map<String, Object> b : bills) {
+            String room = String.valueOf(b.getOrDefault("room", ""));
+            String month = String.valueOf(b.getOrDefault("month", ""));
+            String tenant = String.valueOf(b.getOrDefault("tenant", ""));
+            double total = 0;
+            for (String k : new String[]{"waterFee", "gasFee", "elecFee"}) {
+                Object v = b.get(k);
+                if (v instanceof Number) total += ((Number) v).doubleValue();
+            }
+            String device = String.valueOf(b.getOrDefault("device", ""));
+            String label = room + " · " + month
+                    + (tenant.isEmpty() ? "" : " · 租客 " + tenant)
+                    + " · 合计 " + String.format("%.2f", total) + " 元"
+                    + (device.isEmpty() ? "" : " · 来自 " + device);
+            JCheckBox cb = new JCheckBox(label);
+            boxes.add(cb);
+            list.add(cb);
+        }
+        dlg.add(new JScrollPane(list), BorderLayout.CENTER);
+
+        JPanel btns = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 6));
+        JButton downloadSel = new JButton("下载选中");
+        JButton deleteSel = new JButton("删除选中");
+        JButton cancel = new JButton("取消");
+        btns.add(downloadSel);
+        btns.add(deleteSel);
+        btns.add(cancel);
+        dlg.add(btns, BorderLayout.SOUTH);
+
+        downloadSel.addActionListener(e -> {
+            List<Map<String, Object>> picked = new ArrayList<>();
+            for (int i = 0; i < boxes.size(); i++) {
+                if (boxes.get(i).isSelected()) picked.add(bills.get(i));
+            }
+            if (picked.isEmpty()) {
+                append("没有勾选任何账单。");
+                return;
+            }
+            dlg.dispose();
+            runAsync(() -> {
+                Map<String, Object> payload = new java.util.LinkedHashMap<>();
+                payload.put("bills", picked);
+                int n = MainFrame.mergeCloudBills(payload);
+                append("已下载 " + n + " 条账单到本机。");
+                if (onChanged != null) onChanged.run();
+                persist();
+            });
+        });
+
+        deleteSel.addActionListener(e -> {
+            List<String> uids = new ArrayList<>();
+            for (int i = 0; i < boxes.size(); i++) {
+                if (boxes.get(i).isSelected()) {
+                    Object uid = bills.get(i).get("uid");
+                    if (uid != null && !String.valueOf(uid).isEmpty()) uids.add(String.valueOf(uid));
+                }
+            }
+            if (uids.isEmpty()) {
+                append("没有勾选任何账单。");
+                return;
+            }
+            int ok = JOptionPane.showConfirmDialog(dlg,
+                    "确定从云端删除勾选的 " + uids.size() + " 条账单？本地副本不会被删除。",
+                    "确认删除", JOptionPane.YES_NO_OPTION);
+            if (ok != JOptionPane.YES_OPTION) return;
+            dlg.dispose();
+            runAsync(() -> {
+                int done = 0, fail = 0;
+                for (String uid : uids) {
+                    try {
+                        Cloud.Res r = cloud.delete(uid);
+                        if (r.ok()) done++;
+                        else fail++;
+                    } catch (Exception ex) {
+                        fail++;
+                    }
+                }
+                append("已从云端删除 " + done + " 条" + (fail > 0 ? "，失败 " + fail + " 条。" : "。"));
+            });
+        });
+
+        cancel.addActionListener(e -> dlg.dispose());
+
+        dlg.setSize(640, 420);
+        dlg.setLocationRelativeTo(this);
+        dlg.setVisible(true);
     }
 
     /** 网络请求放后台线程，避免界面卡死 */
