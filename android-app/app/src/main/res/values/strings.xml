@@ -157,6 +157,7 @@
     <string name="about_author_line">作者：知遇</string>
     <string name="about_version_line">版本 v%1$s（支持安卓 9 – 17）</string>
     <string name="about_changelog">更新日志：
+· v2.10.2  修复“从云端下载后主界面看不到新账单”（下载账单未登记房间）；补读云端金额字段，下载后水/电/燃气金额不再为 0
 · v2.10.1  修复升级后账单列表变空的严重问题（查询列下标越界）；升级前自动备份数据库
 · v2.10</string>
 

@@ -12,8 +12,8 @@ android {
         applicationId "com.rent.utility"
         minSdk 26
         targetSdk 35
-        versionCode 24
-        versionName "2.10.1"
+        versionCode 25
+        versionName "2.10.2"
     }
 
     // 签名信息不写进仓库：在 android-app/keystore.properties 里配置（已被 .gitignore 忽略）

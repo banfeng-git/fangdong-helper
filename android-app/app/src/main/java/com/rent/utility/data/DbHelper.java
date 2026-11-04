@@ -614,10 +614,14 @@ public class DbHelper extends SQLiteOpenHelper {
         v.put("note", b.note);
         if (b.id > 0) {
             getWritableDatabase().update("bills", v, "id=?", new String[]{String.valueOf(b.id)});
+            upsertRoomFromBill(b.room, b.tenant);
             return b.id;
         }
         v.put("created_at", System.currentTimeMillis());
-        return getWritableDatabase().insert("bills", null, v);
+        long newId = getWritableDatabase().insert("bills", null, v);
+        // 保存账单时自动登记房间，否则云端下载/导入的账单不会出现在房间列表里
+        upsertRoomFromBill(b.room, b.tenant);
+        return newId;
     }
 
     /** 按云端 uid 查本地账单（同步合并用） */

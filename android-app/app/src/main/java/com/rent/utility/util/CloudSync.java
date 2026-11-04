@@ -251,6 +251,26 @@ public class CloudSync {
                         em.optDouble("amount", 0)));
             }
         }
+        // 金额：服务端是独立字段，必须读，否则下载回来的账单金额全是 0
+        b.waterFee = o.optDouble("waterFee", 0);
+        b.gasFee = o.optDouble("gasFee", 0);
+        b.elecFee = o.optDouble("elecFee", 0);
+        // 兜底：服务端没给金额但有表计时，按表计费用汇总
+        if (b.waterFee == 0) {
+            double s0 = 0;
+            for (Bill.Meter m : b.waterMeters) s0 += m.fee;
+            if (s0 != 0) b.waterFee = round2(s0);
+        }
+        if (b.gasFee == 0) {
+            double s0 = 0;
+            for (Bill.Meter m : b.gasMeters) s0 += m.fee;
+            if (s0 != 0) b.gasFee = round2(s0);
+        }
+        if (b.elecFee == 0) {
+            double s0 = 0;
+            for (Bill.Meter m : b.meters) s0 += m.fee;
+            if (s0 != 0) b.elecFee = round2(s0);
+        }
         b.updatedAt = o.optLong("updatedAt", System.currentTimeMillis());
         b.month = b.month.trim();
         b.room = b.room.trim();
