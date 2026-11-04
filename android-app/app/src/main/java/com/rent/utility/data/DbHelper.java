@@ -30,6 +30,48 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public DbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        // 升级前先整库备份一份，万一迁移出问题还能捞回来
+        backupBeforeUpgrade(context);
+    }
+
+    /** 数据库版本变化时，把旧库复制到 files/db_backup/（最多保留 5 份） */
+    private static void backupBeforeUpgrade(Context ctx) {
+        try {
+            java.io.File dbFile = ctx.getDatabasePath(DB_NAME);
+            if (!dbFile.exists()) return;
+            int oldVer;
+            SQLiteDatabase probe = null;
+            try {
+                probe = SQLiteDatabase.openDatabase(dbFile.getPath(), null, SQLiteDatabase.OPEN_READONLY);
+                oldVer = probe.getVersion();
+            } finally {
+                if (probe != null) probe.close();
+            }
+            if (oldVer <= 0 || oldVer >= DB_VERSION) return;
+            java.io.File dir = new java.io.File(ctx.getFilesDir(), "db_backup");
+            if (!dir.exists() && !dir.mkdirs()) return;
+            java.io.File out = new java.io.File(dir, "rent_utility_v" + oldVer + "_" + System.currentTimeMillis() + ".db");
+            java.io.InputStream in = new java.io.FileInputStream(dbFile);
+            java.io.OutputStream os = new java.io.FileOutputStream(out);
+            try {
+                byte[] buf = new byte[8192];
+                int n;
+                while ((n = in.read(buf)) > 0) os.write(buf, 0, n);
+            } finally {
+                try { in.close(); } catch (Exception ignored) {}
+                try { os.close(); } catch (Exception ignored) {}
+            }
+            java.io.File[] all = dir.listFiles();
+            if (all != null && all.length > 5) {
+                java.util.Arrays.sort(all, new java.util.Comparator<java.io.File>() {
+                    public int compare(java.io.File a, java.io.File b) {
+                        return Long.compare(a.lastModified(), b.lastModified());
+                    }
+                });
+                for (int i = 0; i < all.length - 5; i++) all[i].delete();
+            }
+        } catch (Throwable ignored) {
+        }
     }
 
     @Override
@@ -378,7 +420,9 @@ public class DbHelper extends SQLiteOpenHelper {
             "id,month,room,tenant,water_start,water_end,water_usage,water_fee," +
             "gas_start,gas_end,gas_usage,gas_fee," +
             "elec1_start,elec1_end,elec1_usage,elec2_start,elec2_end,elec2_usage,elec_fee," +
-            "meters_json,water_meters_json,gas_meters_json,extra_items,note";
+            "meters_json,water_meters_json,gas_meters_json,extra_items,note," +
+            // 注意：新增列必须同时加进 COLS，否则下标会错位（v2.10 曾因漏加导致账单读不出来）
+            "uid,updated_at";
 
     private Bill fromCursor(Cursor c) {
         Bill b = new Bill();
@@ -401,8 +445,11 @@ public class DbHelper extends SQLiteOpenHelper {
         b.elec2End = c.getDouble(16);
         b.elec2Usage = c.getDouble(17);
         b.elecFee = c.getDouble(18);
-        b.uid = safe(c.getString(25));
-        b.updatedAt = c.getLong(26);
+        // 按列名读取，避免以后加减列时下标错位（越界会让整张列表变空）
+        int iUid = c.getColumnIndex("uid");
+        int iUpdated = c.getColumnIndex("updated_at");
+        b.uid = iUid >= 0 ? safe(c.getString(iUid)) : "";
+        b.updatedAt = iUpdated >= 0 ? c.getLong(iUpdated) : 0;
         b.meters = Bill.parseMeters(c.getString(19), "电表");
         b.waterMeters = Bill.parseWaterMeters(c.getString(20));
         b.gasMeters = Bill.parseGasMeters(c.getString(21));
