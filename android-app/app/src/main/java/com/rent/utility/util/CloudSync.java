@@ -1,6 +1,7 @@
 package com.rent.utility.util;
 
 import android.content.Context;
+import android.os.Build;
 import android.content.SharedPreferences;
 
 import com.rent.utility.data.Bill;
@@ -183,9 +184,24 @@ public class CloudSync {
 
     // ---------------- 账单 <-> JSON ----------------
 
+    private static String deviceName() {
+        try {
+            String m = Build.MODEL == null ? "" : Build.MODEL.trim();
+            String brand = Build.MANUFACTURER == null ? "" : Build.MANUFACTURER.trim();
+            if (m.isEmpty()) return "android";
+            if (!brand.isEmpty() && !m.toLowerCase().startsWith(brand.toLowerCase())) {
+                return brand + " " + m;
+            }
+            return m;
+        } catch (Exception e) {
+            return "android";
+        }
+    }
+
     public static JSONObject toJson(Bill b) throws Exception {
         JSONObject o = new JSONObject();
         o.put("uid", b.uid);
+        o.put("device", deviceName());
         o.put("room", b.room);
         o.put("tenant", b.tenant);
         o.put("month", b.month);
@@ -232,6 +248,7 @@ public class CloudSync {
     public static Bill fromJson(JSONObject o) {
         Bill b = new Bill();
         b.uid = o.optString("uid", "");
+        b.device = o.optString("device", "");
         b.room = o.optString("room", "");
         b.tenant = o.optString("tenant", "");
         b.month = o.optString("month", "");

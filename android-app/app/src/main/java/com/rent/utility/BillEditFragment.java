@@ -476,11 +476,15 @@ public class BillEditFragment extends Fragment {
         final String feeName = type == TYPE_WATER ? "水费"
                 : type == TYPE_GAS ? "燃气费" : elecFeeName();
 
+        // 初始化期间先把数字填进框，触发的 watcher 只更新用量显示，不要重算费用，
+        // 否则删除一块表触发整列重绘时，原本手工/历史的费用会被错误地按单价覆盖成 0
+        final boolean[] initializing = {true};
         h.labelTv.setText(m.label);
         h.startEt.setText(code(m.start));
         h.endEt.setText(code(m.end));
         h.usageEt.setText(BillCalculator.usage(m.usage));
         h.feeEt.setText(BillCalculator.money(m.fee));
+        initializing[0] = false;
 
         TextWatcher codeWatcher = new SimpleWatcher() {
             @Override
@@ -489,10 +493,12 @@ public class BillEditFragment extends Fragment {
                 m.end = parse(h.endEt);
                 m.usage = Bill.use(m.start, m.end);
                 h.usageEt.setText(BillCalculator.usage(m.usage));
-                FeeItem f = feeByName.get(feeName);
-                if (f != null && f.enabled && f.type == FeeItem.TYPE_USAGE) {
-                    m.fee = BillCalculator.round2(m.usage * f.unitPrice);
-                    h.feeEt.setText(BillCalculator.money(m.fee));
+                if (!initializing[0]) {
+                    FeeItem f = feeByName.get(feeName);
+                    if (f != null && f.enabled && f.type == FeeItem.TYPE_USAGE) {
+                        m.fee = BillCalculator.round2(m.usage * f.unitPrice);
+                        h.feeEt.setText(BillCalculator.money(m.fee));
+                    }
                 }
                 refreshTypeFee(type);
                 updateTotal();

@@ -423,6 +423,7 @@ function normalizeBill(raw, userUid) {
     waterFee: num(src.waterFee, 0),
     gasFee: num(src.gasFee, 0),
     elecFee: num(src.elecFee, 0),
+    device: str(src.device, 40),
     extras: extras,
     updatedAt: Math.round(num(src.updatedAt, Date.now())) || Date.now()
   };
@@ -528,7 +529,7 @@ function createHandler(options) {
     try {
       /* ---------- 健康检查 ---------- */
       if (last === 'health' || last === '') {
-        return ok({ platform: platform, time: nowMs(), version: '2.10.3' }, corsOrigin);
+        return ok({ platform: platform, time: nowMs(), version: '2.10.4' }, corsOrigin);
       }
 
       /* ---------- 注册 ---------- */

@@ -201,18 +201,100 @@ public class SyncActivity extends AppCompatActivity {
             toast("请先登录再下载");
             return;
         }
+        status("正在拉取云端账单列表…");
         runAsync(() -> {
             CloudSync.Res r = CloudSync.list(this);
-            int merged = r.ok() ? mergeFromServer(r.data) : 0;
-            ui.post(() -> {
-                if (r.ok()) {
-                    status("云端共 " + r.data.optInt("count", 0) + " 条，已合并 " + merged + " 条到本机。");
-                    toast("下载完成");
-                } else {
-                    status("下载失败：" + r.msg);
-                }
-            });
+            if (!r.ok()) {
+                ui.post(() -> status("获取云端列表失败：" + r.msg));
+                return;
+            }
+            final JSONArray arr = r.data.optJSONArray("bills");
+            ui.post(() -> showCloudPicker(arr));
         });
+    }
+
+    /** 手动挑选：列出云端账单（含来源设备），可勾选下载，也可勾选从云端删除 */
+    private void showCloudPicker(JSONArray arr) {
+        final JSONArray bills = arr == null ? new JSONArray() : arr;
+        final int n = bills.length();
+        if (n == 0) {
+            status("云端还没有账单。可点“上传本地账单”先传上去。");
+            return;
+        }
+        final String[] items = new String[n];
+        final boolean[] checked = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            try {
+                Bill b = CloudSync.fromJson(bills.getJSONObject(i));
+                String s = b.room + " · " + b.month
+                        + (TextUtils.isEmpty(b.tenant) ? "" : " · 租客 " + b.tenant)
+                        + " · 合计 " + String.format("%.2f", b.total()) + " 元";
+                if (!TextUtils.isEmpty(b.device)) s += " · 来自 " + b.device;
+                items[i] = s;
+            } catch (Exception e) {
+                items[i] = "云端账单 #" + i;
+            }
+        }
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("云端共 " + n + " 条账单（勾选要下载的）")
+                .setMultiChoiceItems(items, checked, (d, w, isChecked) -> checked[w] = isChecked)
+                .setPositiveButton("下载选中", (d, w) -> runAsync(() -> {
+                    int merged = 0;
+                    try {
+                        DbHelper db = new DbHelper(this);
+                        for (int i = 0; i < n; i++) {
+                            if (!checked[i]) continue;
+                            Bill incoming = CloudSync.fromJson(bills.optJSONObject(i));
+                            if (TextUtils.isEmpty(incoming.uid)) continue;
+                            Bill local = db.findByUid(incoming.uid);
+                            if (local == null) {
+                                incoming.id = 0;
+                                db.saveBillFromCloud(incoming);
+                                merged++;
+                            } else if (incoming.updatedAt > local.updatedAt) {
+                                incoming.id = local.id;
+                                db.saveBillFromCloud(incoming);
+                                merged++;
+                            } else {
+                                db.upsertRoomFromBill(local.room, local.tenant);
+                            }
+                        }
+                    } catch (Exception e) {
+                        String m = e.getMessage() == null ? e.toString() : e.getMessage();
+                        ui.post(() -> status("下载出错：" + m));
+                        return;
+                    }
+                    final int c = merged;
+                    ui.post(() -> {
+                        status("已下载 " + c + " 条账单到本机（其余未勾选），返回主界面即可看到。");
+                        toast("下载完成");
+                    });
+                }))
+                .setNeutralButton("删除选中", (d, w) -> runAsync(() -> {
+                    int deleted = 0;
+                    String lastMsg = "";
+                    try {
+                        for (int i = 0; i < n; i++) {
+                            if (!checked[i]) continue;
+                            JSONObject o = bills.optJSONObject(i);
+                            String uid = o == null ? "" : o.optString("uid", "");
+                            if (TextUtils.isEmpty(uid)) continue;
+                            CloudSync.Res r = CloudSync.delete(this, uid);
+                            if (r.ok()) deleted++;
+                            else lastMsg = r.msg;
+                        }
+                    } catch (Exception e) {
+                        lastMsg = e.getMessage();
+                    }
+                    final int c = deleted;
+                    final String msg = lastMsg;
+                    ui.post(() -> {
+                        status("已从云端删除 " + c + " 条账单。" + (TextUtils.isEmpty(msg) ? "" : "（出错：" + msg + "）"));
+                        toast("删除完成");
+                    });
+                }))
+                .setNegativeButton("取消", null)
+                .show();
     }
 
     /** 把服务端返回的账单并进本地数据库（按 uid，时间新的覆盖旧的） */

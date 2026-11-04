@@ -60,6 +60,9 @@ public class Bill {
     /** 云端同步用：全局唯一标识（本机生成，换手机也不会重复） */
     public String uid = "";
 
+    /** 上传设备标识（如 HONOR Magic6），仅用于云端列表区分来源 */
+    public String device = "";
+
     /** 云端同步用：最后修改时间（毫秒时间戳），用于多端合并时判断新旧 */
     public long updatedAt = 0;
 
