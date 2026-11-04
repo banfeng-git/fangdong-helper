@@ -145,6 +145,25 @@ public class DbHelper extends SQLiteOpenHelper {
         db.insert("fee_items", null, v);
     }
 
+    /** 每次打开库都做一次轻量自愈：账单里出现过的房间，一定在 rooms 表里存在 */
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        try {
+            db.execSQL("CREATE TABLE IF NOT EXISTS rooms (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "name TEXT NOT NULL UNIQUE," +
+                    "tenant TEXT DEFAULT ''," +
+                    "rent_start TEXT DEFAULT ''," +
+                    "rent_end TEXT DEFAULT ''," +
+                    "created_at INTEGER DEFAULT 0)");
+            db.execSQL("INSERT OR IGNORE INTO rooms(name, created_at) " +
+                    "SELECT DISTINCT room, MAX(created_at) FROM bills " +
+                    "WHERE room IS NOT NULL AND room<>'' GROUP BY room");
+        } catch (Exception ignored) {
+        }
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try {

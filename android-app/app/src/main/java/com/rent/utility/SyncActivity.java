@@ -236,6 +236,9 @@ public class SyncActivity extends AppCompatActivity {
                     incoming.id = local.id;
                     db.saveBillFromCloud(incoming);
                     count++;
+                } else {
+                    // 本地已有同一条（可能是之前下载过但没登记房间），补登记，保证主界面能看到
+                    db.upsertRoomFromBill(local.room, local.tenant);
                 }
             }
         } catch (Exception e) {

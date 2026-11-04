@@ -428,6 +428,21 @@ function normalizeBill(raw, userUid) {
   };
 }
 
+/**
+ * 出口规整：读出来的历史账单可能来自旧版本/其他客户端，字段缺失或类型不对会让 App 解析失败。
+ * 统一过一遍 normalizeBill，保证 uid / room / month / 三个金额 / updatedAt 一定存在且类型正确。
+ */
+function normalizeOutgoing(list, userId) {
+  const out = [];
+  const arr = Array.isArray(list) ? list : [];
+  for (let i = 0; i < arr.length; i++) {
+    const b = normalizeBill(arr[i], userId);
+    if (!b.uid) b.uid = newUid();
+    out.push(b);
+  }
+  return out;
+}
+
 function newUid() {
   return bytesToHex(randomBytes(12));
 }
@@ -513,7 +528,7 @@ function createHandler(options) {
     try {
       /* ---------- 健康检查 ---------- */
       if (last === 'health' || last === '') {
-        return ok({ platform: platform, time: nowMs(), version: '2.10' }, corsOrigin);
+        return ok({ platform: platform, time: nowMs(), version: '2.10.3' }, corsOrigin);
       }
 
       /* ---------- 注册 ---------- */
@@ -559,7 +574,7 @@ function createHandler(options) {
       }
 
       if (last === 'bills' && method === 'GET') {
-        const bills = await store.getBills(userId);
+        const bills = normalizeOutgoing(await store.getBills(userId), userId);
         return ok({ bills: bills, count: bills.length }, corsOrigin);
       }
 
@@ -576,7 +591,7 @@ function createHandler(options) {
           await store.putBill(userId, bill);
           accepted++;
         }
-        const all = await store.getBills(userId);
+        const all = normalizeOutgoing(await store.getBills(userId), userId);
         return ok({ uploaded: accepted, bills: all, count: all.length }, corsOrigin);
       }
 

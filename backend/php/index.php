@@ -352,7 +352,8 @@ function get_bills($userId)
     foreach ($stmt->fetchAll() as $row) {
         $b = json_decode($row['payload'], true);
         if (is_array($b)) {
-            $out[] = $b;
+            // 出口统一规整，保证 uid/金额/时间齐全，客户端不用再兼容旧格式
+            $out[] = normalize_bill($b);
         }
     }
     return $out;
