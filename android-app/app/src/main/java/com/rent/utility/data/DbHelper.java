@@ -20,13 +20,14 @@ import java.util.List;
  *     收费项目补充内置“燃气费”。
  * v6：新增 rooms 表（房间名/租客/租房时间/到期时间）；删除房间级联删除该房间全部账单；
  *     保存账单时自动登记房间；历史账单按房间组织（房间 → 账单 二级导航）。
+ * v10：修复云端下载的账单缺少房间记录 —— 升级时从 bills 反推重建 rooms
  * v8：水表、燃气表也支持多块（water_meters_json / gas_meters_json 动态列表，兼容列存第 1 块）；
  *     收费项目内置合并为 水费 / 电表 / 燃气费 三项（去掉“电表1”“电表2”两个条目，统一按“电表”计费）。
  */
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "rent_utility.db";
-    private static final int DB_VERSION = 9;
+    private static final int DB_VERSION = 10;
 
     public DbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
