@@ -9,7 +9,11 @@
 
 ---
 
-## 下载（不用 clone 也能用）
+## 下载
+
+>> **最新：v2.10.1 紧急修复版**（修复 v2.10 升级后账单列表变空的 bug，数据本身没丢）→ [fangdong-helper-v2.10.1-android.apk](https://github.com/banfeng-git/fangdong-helper/releases/download/v2.10.1/fangdong-helper-v2.10.1-android.apk) · 直接覆盖安装，**不要卸载**
+
+（不用 clone 也能用）
 
 GitHub 发布页：**<https://github.com/banfeng-git/fangdong-helper/releases/latest>**
 每个包都是 zip（APK 除外），按需下载，彼此独立：
